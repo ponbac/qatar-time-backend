@@ -1,15 +1,26 @@
 import os
+from typing import List
 from dotenv import load_dotenv
 from realtime.connection import Socket
+from client import SupaClient
 
 from config import Settings
 
 
 conf = Settings()
+SUPA_CLIENT = SupaClient(conf.SUPABASE_URL, conf.SUPABASE_KEY)
 
 
 def game_callback(payload):
     print("Game callback: ", payload['record'])
+
+    games = SUPA_CLIENT.fetch_games()
+    for user in SUPA_CLIENT.fetch_users():
+        # print(user.name)
+        score = user.calculate_score(games)
+        SUPA_CLIENT.update_score(user.id, score)
+        if score > 0:
+            print(f"{user.name}: {score} points")
 
 
 def groups_callback(payload):

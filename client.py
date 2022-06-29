@@ -1,20 +1,37 @@
-import os
+from typing import List
 from supabase import create_client, Client
 
 from config import Settings
+from models.game import Game
 from models.user import User
 
-conf = Settings()
 
-supabase: Client = create_client(conf.SUPABASE_URL, conf.SUPABASE_KEY)
+class SupaClient:
+    def __init__(self, url, key):
+        self.url = url
+        self.key = key
+        self.client = create_client(url, key)
 
-data = supabase.table("users").select("*").execute()
-# Assert we pulled real data.
-assert len(data.data) > 0
+    def fetch_users(self) -> List[User]:
+        data = self.client.table("users").select("*").execute()
+        assert len(data.data) > 0
 
-for user in data.data:
-    userObject = User.from_dict(user)
-    print(userObject.name)
-    if userObject.name == 'Bakuman':
-        for team in userObject.predictions[0].result:
-            print(team.name)
+        users = []
+        for user in data.data:
+            users.append(User.from_dict(user))
+
+        return users
+
+    def fetch_games(self) -> List[Game]:
+        data = self.client.table("games").select("*").execute()
+        assert len(data.data) > 0
+
+        games = []
+        for game in data.data:
+            games.append(Game.from_dict(game))
+
+        return games
+
+    def update_score(self, user_id: str, score: int):
+        self.client.table("users").update(
+            {"score": score}).eq("id", user_id).execute()

@@ -13,6 +13,7 @@ class Game:
     awayGoals: int
     date: str
     finished: bool
+    winner: int
 
     @staticmethod
     def from_dict(data: dict):
@@ -24,5 +25,23 @@ class Game:
             awayTeam=data['awayTeam'],
             awayGoals=data['awayGoals'],
             date=data['date'],
-            finished=data['finished']
+            finished=data['finished'],
+            winner=data['winner']
+        )
+
+
+@dataclass
+class GamePrediction:
+    id: int
+    homeGoals: int
+    awayGoals: int
+    winner: int
+
+    @staticmethod
+    def from_dict(data: dict):
+        return GamePrediction(
+            id=data['id'],
+            homeGoals=data['homeGoals'],
+            awayGoals=data['awayGoals'],
+            winner=data['winner']
         )

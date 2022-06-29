@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 import json
 from typing import List
-from models.game import Game
+from models.game import Game, GamePrediction
 
 from models.team import Team
 
@@ -9,7 +9,7 @@ from models.team import Team
 @dataclass
 class Prediction:
     groupId: str
-    games: List[Game]
+    games: List[GamePrediction]
     result: List[Team]
 
     @staticmethod
@@ -19,7 +19,7 @@ class Prediction:
 
         games = []
         for game in data['games']:
-            games.append(Game.from_dict(game))
+            games.append(GamePrediction.from_dict(game))
         result = []
         for team in data['result']:
             result.append(Team.from_dict(team))
@@ -31,11 +31,11 @@ class Prediction:
         )
 
     @staticmethod
-    def from_json(jsonStr: str):
+    def from_json_to_map(jsonStr: str):
         # parse json
         data = json.loads(jsonStr)
-        predictions: List[Prediction] = []
+        predictions: dict[str, Prediction] = {}
         for p in data:
-            predictions.append(Prediction.from_dict(p))
+            predictions[p['groupId']] = Prediction.from_dict(p)
 
         return predictions
