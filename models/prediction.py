@@ -27,7 +27,7 @@ class Prediction:
         return Prediction(
             groupId=data['groupId'],
             games=games,
-            result=data['result']
+            result=result
         )
 
     @staticmethod

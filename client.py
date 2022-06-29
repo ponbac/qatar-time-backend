@@ -16,4 +16,5 @@ for user in data.data:
     userObject = User.from_dict(user)
     print(userObject.name)
     if userObject.name == 'Bakuman':
-        print(userObject.predictions[0])
+        for team in userObject.predictions[0].result:
+            print(team.name)
