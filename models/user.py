@@ -17,8 +17,7 @@ class User:
     def from_dict(data: dict):
         predictions = []
         if data['predictions'] is not None:
-            for prediction in data['predictions']:
-                predictions.append(Prediction.from_dict(prediction))
+            predictions = Prediction.from_json(data['predictions'])
 
         return User(
             id=data['id'],

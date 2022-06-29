@@ -15,3 +15,5 @@ assert len(data.data) > 0
 for user in data.data:
     userObject = User.from_dict(user)
     print(userObject.name)
+    if userObject.name == 'Bakuman':
+        print(userObject.predictions[0])

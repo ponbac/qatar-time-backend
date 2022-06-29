@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+import json
 from typing import List
 from models.game import Game
 
@@ -28,3 +29,13 @@ class Prediction:
             games=games,
             result=data['result']
         )
+
+    @staticmethod
+    def from_json(jsonStr: str):
+        # parse json
+        data = json.loads(jsonStr)
+        predictions: List[Prediction] = []
+        for p in data:
+            predictions.append(Prediction.from_dict(p))
+
+        return predictions
