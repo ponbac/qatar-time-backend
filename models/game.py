@@ -26,7 +26,7 @@ class Game:
             awayGoals=data['awayGoals'],
             date=data['date'],
             finished=data['finished'],
-            winner=data['winner']
+            winner=data['winner'] if data['winner'] is not None else -1
         )
 
 
