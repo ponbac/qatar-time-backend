@@ -34,7 +34,7 @@ class User:
             return 0
 
         score = 0
-        finished_games = filter(lambda g: g.finished, games)
+        finished_games = list(filter(lambda g: g.finished, games))
         for group_prediction in self.predictions.values():
             group_games = filter(lambda g: g.groupId ==
                                  group_prediction.groupId, finished_games)

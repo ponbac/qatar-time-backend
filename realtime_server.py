@@ -15,6 +15,7 @@ def game_callback(payload):
     print("Game callback: ", payload['record'])
 
     games = SUPA_CLIENT.fetch_games()
+    print("Calculating scores...")
     for user in SUPA_CLIENT.fetch_users():
         score = user.calculate_score(games)
         SUPA_CLIENT.update_score(user.id, score)
