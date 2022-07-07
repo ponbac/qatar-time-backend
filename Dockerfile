@@ -1,5 +1,5 @@
 # docker build -t qatar-backend:0.1 .
-# docker run --rm -p 443:443 qatar-backend:0.1
+# docker run --rm --restart=always -p 443:443 qatar-backend:0.1
 FROM python:3.9.7
 
 WORKDIR /code
