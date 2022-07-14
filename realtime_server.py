@@ -27,7 +27,7 @@ def groups_callback(payload):
     print("Groups callback: ", payload['record'])
 
 
-if __name__ == "__main__":
+def main():
     URL = f"wss://{conf.SUPABASE_ID}.supabase.co/realtime/v1/websocket?apikey={conf.SUPABASE_KEY}&vsn=1.0.0"
     s = Socket(URL)
     s.connect()
@@ -37,3 +37,16 @@ if __name__ == "__main__":
     # groups_channel = s.set_channel("realtime:public:groups")
     # groups_channel.join().on("UPDATE", groups_callback)
     s.listen()
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except Exception as e:
+        print(e)
+        if e == KeyboardInterrupt:
+            print("Exiting...")
+            os._exit(0)
+        else:
+            print("Something went wrong, restarting...")
+            main()
