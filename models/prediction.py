@@ -10,7 +10,7 @@ from models.team import Team
 class Prediction:
     groupId: str
     games: List[GamePrediction]
-    result: List[Team]
+    results: List[Team]
 
     @staticmethod
     def from_dict(data: dict):
@@ -20,14 +20,14 @@ class Prediction:
         games = []
         for game in data['games']:
             games.append(GamePrediction.from_dict(game))
-        result = []
+        results = []
         for team in data['result']:
-            result.append(Team.from_dict(team))
+            results.append(Team.from_dict(team))
 
         return Prediction(
             groupId=data['groupId'],
             games=games,
-            result=result
+            results=results
         )
 
     @staticmethod

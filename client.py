@@ -3,6 +3,7 @@ from supabase import create_client, Client
 
 from config import Settings
 from models.game import Game
+from models.group import Group
 from models.user import User
 
 
@@ -31,6 +32,16 @@ class SupaClient:
             games.append(Game.from_dict(game))
 
         return games
+
+    def fetch_groups(self) -> List[Group]:
+        data = self.client.table("groups").select("*").execute()
+        assert len(data.data) > 0
+
+        groups = []
+        for group in data.data:
+            groups.append(Group.from_dict(group))
+
+        return groups
 
     def update_score(self, user_id: str, score: int):
         self.client.table("users").update(
