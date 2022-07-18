@@ -34,10 +34,13 @@ def main():
         s = Socket(URL)
         s.connect()
 
+        # Calculate on start
+        game_callback({'record': "initial_load"})
+
         games_channel = s.set_channel("realtime:public:games")
         games_channel.join().on("UPDATE", game_callback)
-        # groups_channel = s.set_channel("realtime:public:groups")
-        # groups_channel.join().on("UPDATE", groups_callback)
+        groups_channel = s.set_channel("realtime:public:groups")
+        groups_channel.join().on("UPDATE", game_callback)
         s.listen()
     except Exception as e:
         print(e)
