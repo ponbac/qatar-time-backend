@@ -3,6 +3,8 @@ from typing import List
 from dotenv import load_dotenv
 from realtime.connection import Socket
 from client import SupaClient
+import sched
+import time
 
 from config import Settings
 
@@ -11,7 +13,7 @@ conf = Settings()
 SUPA_CLIENT = SupaClient(conf.SUPABASE_URL, conf.SUPABASE_KEY)
 
 
-def game_callback(payload):
+def game_callback(payload, sc=None):
     print("Game callback: ", payload['record'])
 
     games = SUPA_CLIENT.fetch_games()
@@ -22,6 +24,9 @@ def game_callback(payload):
         SUPA_CLIENT.update_score(user.id, score)
         if score > 0:
             print(f"{user.name}: {score} points")
+
+    if sc:
+        sc.enter(300, 1, game_callback, ({'record': "initial_load"}, sc))
 
 
 def groups_callback(payload):
@@ -34,8 +39,11 @@ def main():
         s = Socket(URL)
         s.connect()
 
-        # Calculate on start
-        game_callback({'record': "initial_load"})
+        # Calculate on start and add scheduler
+        sc = sched.scheduler(time.time, time.sleep)
+        # game_callback({'record': "initial_load"})
+        sc.enter(5, 1, game_callback, ({'record': "initial_load"}, sc))
+        sc.run()
 
         games_channel = s.set_channel("realtime:public:games")
         games_channel.join().on("UPDATE", game_callback)
