@@ -9,7 +9,7 @@ import time
 from config import Settings
 
 
-conf = Settings()
+conf = Settings()  # type: ignore
 SUPA_CLIENT = SupaClient(conf.SUPABASE_URL, conf.SUPABASE_KEY)
 
 
