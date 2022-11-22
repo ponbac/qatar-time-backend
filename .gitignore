@@ -2,3 +2,5 @@
 __pycache__
 qatar.env
 cl.env
+__pypackages__
+.pdm.toml
