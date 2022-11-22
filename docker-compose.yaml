@@ -1,6 +1,6 @@
 services:
-  mock-kawaii:
-    container_name: kawaii-api
+  qatar:
+    container_name: qatar-scorer
     build: .
     ports:
       - 3999:8000
